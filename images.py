@@ -14,18 +14,27 @@ db = client.test
 record1 = db.user
 ct_collection = db.career_timeline
 exp_collection = db.experience
-# from mongoengine import *
 
 
 class Resource(object):
-    def search(FirstName):
-         return record1.find_one({"First Name": FirstName},{"CareerTimeline":1})['CareerTimeline']
+    # Function for nose testing which returns true or false when record found or not
+    def search_res(FirstName):
+        try:
+            result = Resource.search(FirstName)
+            return True
+        except:
+            return False
 
+    # Function to search a record based on first name
+    def search(FirstName):
+        return record1.find_one({"First Name": FirstName},{"CareerTimeline":1})['CareerTimeline']
+
+
+    # Function to return json response
     def on_get(self, req, resp):
         try:
             FirstName = req.get_param("FirstName")
             lst = []
-            # json_name = record1.find_one({"First Name": FirstName},{"CareerTimeline":1})['CareerTimeline']
             json_name = Resource.search(FirstName)
             titles = exp_collection.find({"fromCareer": json_name},{"Title": 1, "StartDate": 1})
 
@@ -38,19 +47,14 @@ class Resource(object):
                 firstExperience =  firstExperience.isoformat()
             else:
                 firstExperience = json.JSONEncoder.default(self, firstExperience)
-            # pprint.pprint(firstExperience)
             
-
             exp = json.dumps(firstExperience, default=json_util.default)
-
-
-
-
+            # Response is here
             doc = {
                 'users': [
                     {
                         'FirstName': FirstName,
-                        # 'FirstExperience': exp[1:8]
+                        'FirstExperience': exp[1:8]
                     }
 
                 ]

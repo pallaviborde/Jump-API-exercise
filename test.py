@@ -2,21 +2,17 @@ import nose
 from .images import Resource
 from nose.tools import *
 class TestFruit(object):
-	def setup(self):
-		self.resource = Resource()
-		result = self.resource.search()
-
+    # Function to test if the passed value of first name exists or not
+    
 	def test_search(self):
-		result = []
-		result.append(self.resource.search("Neena"))
-		if len(result)>0:
-			nose.tools.assert_equal(len(result), 1)
-		
+		self.resource = Resource()
+		result = Resource.search_res("Neena")
+		if result == True:
+			nose.tools.assert_true(result)
+		else:
+			nose.tools.assert_false(result)
 
 	
-	def teardown(self):
-		self.resource.disappear()
-
 nose.main()
     
 
