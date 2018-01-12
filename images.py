@@ -17,8 +17,12 @@ exp_collection = db.experience
 
 
 class Resource(object):
+
+    
+
+
     # Function for nose testing which returns true or false when record found or not
-    def search_res(FirstName):
+    def search_res(self, FirstName):
         try:
             result = Resource.search(FirstName)
             return True
